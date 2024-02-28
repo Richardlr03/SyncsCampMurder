@@ -9,6 +9,7 @@ MORSE_CODE_DICT = {
     'R':'.-.', 'S':'...', 'T':'-',
     'U':'..-', 'V':'...-', 'W':'.--',
     'X':'-..-', 'Y':'-.--', 'Z':'--..',
+    "'": '.----.'
 }
 
 # Point values from scrabble
@@ -17,7 +18,7 @@ SCRABBLE_VALUE_DICT = {
     "G": 2, "H": 4, "I": 1, "J": 8, "K": 5, "L": 1,
     "M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1,
     "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8,
-    "Y": 4, "Z": 10
+    "Y": 4, "Z": 10, "'": 0
 }
 
 # SYNCS Multiplier
@@ -39,7 +40,7 @@ def mystery_hash(name):
         syncs_val = 0
         if char in SYNCS_MULTIPLIER.keys():
             syncs_val = 10
-        hash += n_dots + scrabble_val + syncs_val
+        hash += scrabble_val + syncs_val
     
     return hash
 
@@ -54,7 +55,6 @@ def generate_tex(names):
                  "\\usetheme{Montpellier}" \
                 "\\usecolortheme{dolphin}" \
                 "\\usepackage{pgfpages}" \
-                "\\pgfpagesuselayout{4 on 1}[a4paper, landscape, border shrink=5mm]" \
                 "\\pgfpageslogicalpageoptions{1}{border code=\\pgfusepath{stroke}}" \
                 "\\pgfpageslogicalpageoptions{2}{border code=\\pgfusepath{stroke}}" \
                 "\\pgfpageslogicalpageoptions{3}{border code=\\pgfusepath{stroke}}" \
@@ -66,22 +66,94 @@ def generate_tex(names):
                 "}" \
                 "\\begin{document}"
 
-    for i in range(len(names) - 1):
+    i = 0
+    while i < len(names) - 6:
+
+        for k in range(6):
+            tex_string += "\\begin{frame}" \
+            "\\begin{center}" \
+            f"\\Huge {names[i + k]}  \\\\" \
+            "\\end{center}" \
+            "\\end{frame}"
+            print(i + k + 1)
+
+        for k in range(6):
+            tex_string += "\\begin{frame}" \
+            "\\begin{center}" \
+            f"\\Huge Hi {names[i + k]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i + k + 1]}" \
+            "\\end{center}" \
+            "\\end{frame}"
+
+        i += 6
+    print(f"after first run, i is {i}")
+    tex_string += "\\newpage"
+    last_even_divider = i
+    while i < len(names) - 1:
         tex_string += "\\begin{frame}" \
         "\\begin{center}" \
-        f"\\Huge Hi {names[i]},  \\" \
-        f"Welcome to SYNCS Camp! Your target is {names[i+1]}" \
+        f"\\Huge {names[i]}  \\\\" \
         "\\end{center}" \
-        "\\end{frame}"
+        "\\end{frame}"  
         i += 1
 
     tex_string += "\\begin{frame}" \
     "\\begin{center}" \
-    f"\\Huge Hi {names[-1]},  \\" \
-    f"Welcome to SYNCS Camp! Your target is {names[0]}" \
+    f"\\Huge {names[-1]}  \\\\" \
     "\\end{center}" \
     "\\end{frame}"
-    
+
+    tex_string += "\\newpage"
+    i = last_even_divider
+
+    while i < len(names) - 1:
+        tex_string += "\\begin{frame}" \
+                        "\\begin{center}" \
+                        f"\\Huge Hi {names[i]},  \\\\" \
+                        f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i+1]}" \
+                        "\\end{center}" \
+                        "\\end{frame}"  
+        i += 1 
+
+    tex_string += "\\begin{frame}" \
+    "\\begin{center}" \
+    f"\\Huge Hi {names[-1]},  \\\\" \
+    f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[0]}" \
+    "\\end{center}" \
+    "\\end{frame}"
+
+    # tex_string += "\\newpage"
+    # i = last_even_divider
+    # while i < len(names) - 1:
+    #     tex_string += "\\begin{frame}" \
+    #     "\\begin{center}" \
+    #     f"\\Huge {names[i]},  \\\\" \
+    #     "\\end{center}" \
+    #     "\\end{frame}"  
+    #     i += 1
+ 
+
+    # for k in range(5, -2, -1):
+    #     print(len(names) - k - 1)
+    #     tex_string += "\\begin{frame}" \
+    #                 "\\begin{center}" \
+    #                 f"\\Huge Hi {names[-2 - k - 1]},  \\\\" \
+    #                 f"Welcome to SYNCS Camp! Your target is \\color\{{red}} {names[-2 - k]}" \
+    #                 "\\end{center}" \
+    #                 "\\end{frame}"
+
+    # for k in range(5, -2, -1):
+    #     tex_string += "\\begin{frame}" \
+    #     "\\begin{center}" \
+    #     f"\\Huge Hi {names[-2 - k - 1]},  \\\\" \
+    #     "\\end{center}" \
+    #     "\\end{frame}"
+    # tex_string += "\\begin{frame}" \
+    # "\\begin{center}" \
+    # f"\\Huge {names[-1]},  \\\\" \
+    # "\\end{center}" \
+    # "\\end{frame}"
+
     tex_string += "\\end{document}"
 
     f = open("generated_nametags.tex", "w")
@@ -89,11 +161,13 @@ def generate_tex(names):
     f.close()
 
 extract_names('names.txt')
-generate_tex(names)
 names_by_hashes = [[name, 0] for name in names]
 for name_pair in names_by_hashes:
     print(name_pair)
     name_pair[1] = mystery_hash(name_pair[0])
 
+
 algo_order = sorted(names_by_hashes, key=lambda x: x[1])
+names = [i[0] for i in algo_order]
+generate_tex(names)
 print(algo_order)

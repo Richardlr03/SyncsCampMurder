@@ -1,0 +1,17 @@
+{
+    "games": {
+        "murder": {
+            "kills": [{
+                "name": "StudentA",                         // The name of the node
+                "marriages": [{                           // Marriages is a list of nodes
+                spouse: {                             // Each marriage has one spouse
+                name: "Mother",
+                },
+                children: [{                          // List of children nodes
+                name: "Child",
+                }]
+                }]
+                }]
+        }
+    }
+}
