@@ -1,0 +1,18 @@
+.node__root > circle {
+    fill: red;
+    font-size: ;
+  }
+
+.node__branch > circle {
+    fill: red;
+}
+
+.node__leaf > circle {
+    fill: green;
+    /* Let's also make the radius of leaf nodes larger */
+    x: 40;
+}
+
+.murdergraph {
+    height: 80vh;
+}

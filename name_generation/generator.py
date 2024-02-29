@@ -68,7 +68,6 @@ def generate_tex(names):
 
     i = 0
     while i < len(names) - 6:
-
         for k in range(6):
             tex_string += "\\begin{frame}" \
             "\\begin{center}" \
@@ -77,8 +76,16 @@ def generate_tex(names):
             "\\end{frame}"
             print(i + k + 1)
 
-        for k in range(6):
+        for k in range(0, 6, 2):
+            print(f"Mapping {i + k + 1} + {i + k + 2}")
+            print(f"Mapping {i + k} + {i + k + 1}")
             tex_string += "\\begin{frame}" \
+            "\\begin{center}" \
+            f"\\Huge Hi {names[i + k + 1]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i + k + 2]}" \
+            "\\end{center}" \
+            "\\end{frame}" \
+            "\\begin{frame}" \
             "\\begin{center}" \
             f"\\Huge Hi {names[i + k]},  \\\\" \
             f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i + k + 1]}" \
@@ -106,21 +113,33 @@ def generate_tex(names):
     tex_string += "\\newpage"
     i = last_even_divider
 
-    while i < len(names) - 1:
+    while i < len(names) - 2:
         tex_string += "\\begin{frame}" \
-                        "\\begin{center}" \
-                        f"\\Huge Hi {names[i]},  \\\\" \
-                        f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i+1]}" \
-                        "\\end{center}" \
-                        "\\end{frame}"  
-        i += 1 
+            "\\begin{center}" \
+            f"\\Huge Hi {names[i + 1]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i + 2]}" \
+            "\\end{center}" \
+            "\\end{frame}" \
+            "\\begin{frame}" \
+            "\\begin{center}" \
+            f"\\Huge Hi {names[i]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[i + 1]}" \
+            "\\end{center}" \
+            "\\end{frame}"
+
+        i += 2
 
     tex_string += "\\begin{frame}" \
-    "\\begin{center}" \
-    f"\\Huge Hi {names[-1]},  \\\\" \
-    f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[0]}" \
-    "\\end{center}" \
-    "\\end{frame}"
+            "\\begin{center}" \
+            f"\\Huge Hi {names[-1]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[0]}" \
+            "\\end{center}" \
+            "\\end{frame}""\\begin{frame}" \
+            "\\begin{center}" \
+            f"\\Huge Hi {names[-2]},  \\\\" \
+            f"Welcome to SYNCS Camp! Your target is \\color{{red}} {names[-1]}" \
+            "\\end{center}" \
+            "\\end{frame}"
 
     # tex_string += "\\newpage"
     # i = last_even_divider
