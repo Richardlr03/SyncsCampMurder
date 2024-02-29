@@ -1,4 +1,5 @@
 import { GraphCanvas, Theme } from 'reagraph';
+import { murderGraphTheme } from './MurderGraphTheme';
 import Tree from 'react-d3-tree';
 
 
@@ -33,11 +34,6 @@ function MurderGame() {
             source: 'Thomas Dizon',
             target: 'Jessica Tan'
         },
-        {
-            id: 'Dillon de Silva->Thomas Dizon',
-            source: 'Dillon de Silva',
-            target: 'Thomas Dizon'
-        }
     ];
 
     const themeSettings = {
@@ -49,7 +45,7 @@ function MurderGame() {
     // const tree = dTree.init(data);
     return ( 
       <div className="container mx-auto block">
-        <GraphCanvas draggable={true} nodes={nodes} edges={edges} />
+        <GraphCanvas theme={murderGraphTheme} draggable={true} nodes={nodes} edges={edges} />
       </div>
     );
   }
