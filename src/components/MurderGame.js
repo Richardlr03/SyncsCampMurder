@@ -48,9 +48,8 @@ function MurderGame() {
 
     // const tree = dTree.init(data);
     return ( 
-      <div className="container mx-auto block -z-50">
+      <div className="container mx-auto block">
         <GraphCanvas draggable={true} nodes={nodes} edges={edges} />
-        <h1>heello</h1>
       </div>
     );
   }
