@@ -89,6 +89,10 @@ function MurderGame() {
         return true;
     };
 
+    const removeEdge = (edgeId) => {
+        setEdges((prev) => prev.filter((edge) => edge.id !== edgeId));
+    };
+
     return (
         <MurderGameView
             nodes={nodes}
@@ -99,6 +103,7 @@ function MurderGame() {
             onSourceChange={setSourceInput}
             onTargetChange={setTargetInput}
             onSubmit={addEdge}
+            onEdgeClick={removeEdge}
         />
     );
   }

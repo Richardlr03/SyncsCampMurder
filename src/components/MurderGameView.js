@@ -10,7 +10,8 @@ function MurderGameView({
     error,
     onSourceChange,
     onTargetChange,
-    onSubmit
+    onSubmit,
+    onEdgeClick
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleSubmit = (event) => {
@@ -70,7 +71,13 @@ function MurderGameView({
                 </div>
             ) : null}
             <div className="relative h-[70vh] min-h-[360px]">
-                <GraphCanvas theme={murderGraphTheme} draggable={true} nodes={nodes} edges={edges} />
+                <GraphCanvas
+                    theme={murderGraphTheme}
+                    draggable={true}
+                    nodes={nodes}
+                    edges={edges}
+                    onEdgeClick={(edge) => onEdgeClick(edge.id)}
+                />
             </div>
         </div>
     );
