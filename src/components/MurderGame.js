@@ -1,10 +1,9 @@
-import { GraphCanvas, Theme } from 'reagraph';
-import { murderGraphTheme } from './MurderGraphTheme';
-import Tree from 'react-d3-tree';
+import { useMemo, useState } from 'react';
+import MurderGameView from './MurderGameView';
 
 
 function MurderGame() {
-    const nodes = [
+    const [nodes, setNodes] = useState([
         {
             id: 'Dillon de Silva',
             label: 'Dillon de Silva'
@@ -21,9 +20,8 @@ function MurderGame() {
             id: 'Jessica Tan',
             label: 'Jessica Tan'
         }
-    ];
-
-    const edges = [
+    ]);
+    const [edges, setEdges] = useState([
         {
             id: 'Dillon de Silva->Jennifer Tan',
             source: 'Dillon de Silva',
@@ -34,19 +32,62 @@ function MurderGame() {
             source: 'Thomas Dizon',
             target: 'Jessica Tan'
         },
-    ];
+    ]);
+    const [sourceInput, setSourceInput] = useState('');
+    const [targetInput, setTargetInput] = useState('');
+    const [error, setError] = useState('');
 
-    const themeSettings = {
-        canvas: {
-            background: '#fff'
+    const nodeIds = useMemo(() => new Set(nodes.map((node) => node.id)), [nodes]);
+    const edgeIds = useMemo(() => new Set(edges.map((edge) => edge.id)), [edges]);
+
+    const addEdge = (event) => {
+        event.preventDefault();
+        const source = sourceInput.trim();
+        const target = targetInput.trim();
+
+        if (!source || !target) {
+            setError('Source and target are required.');
+            return;
         }
-    }
 
-    // const tree = dTree.init(data);
-    return ( 
-      <div className="container mx-auto block">
-        <GraphCanvas theme={murderGraphTheme} draggable={true} nodes={nodes} edges={edges} />
-      </div>
+        if (source === target) {
+            setError('Source and target must be different.');
+            return;
+        }
+
+        const edgeId = `${source}->${target}`;
+        if (edgeIds.has(edgeId)) {
+            setError('That edge already exists.');
+            return;
+        }
+
+        setNodes((prev) => {
+            const next = [...prev];
+            if (!nodeIds.has(source)) {
+                next.push({ id: source, label: source });
+            }
+            if (!nodeIds.has(target)) {
+                next.push({ id: target, label: target });
+            }
+            return next;
+        });
+        setEdges((prev) => [...prev, { id: edgeId, source, target }]);
+        setSourceInput('');
+        setTargetInput('');
+        setError('');
+    };
+
+    return (
+        <MurderGameView
+            nodes={nodes}
+            edges={edges}
+            sourceInput={sourceInput}
+            targetInput={targetInput}
+            error={error}
+            onSourceChange={setSourceInput}
+            onTargetChange={setTargetInput}
+            onSubmit={addEdge}
+        />
     );
   }
     
