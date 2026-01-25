@@ -52,25 +52,24 @@ function MurderGame() {
         );
     }, [nodes, edges]);
 
-    const addEdge = (event) => {
-        event.preventDefault();
-        const source = sourceInput.trim();
-        const target = targetInput.trim();
+    const addEdge = (sourceValue, targetValue) => {
+        const source = sourceValue.trim();
+        const target = targetValue.trim();
 
         if (!source || !target) {
             setError('Source and target are required.');
-            return;
+            return false;
         }
 
         if (source === target) {
             setError('Source and target must be different.');
-            return;
+            return false;
         }
 
         const edgeId = `${source}->${target}`;
         if (edgeIds.has(edgeId)) {
             setError('That edge already exists.');
-            return;
+            return false;
         }
 
         setNodes((prev) => {
@@ -87,6 +86,7 @@ function MurderGame() {
         setSourceInput('');
         setTargetInput('');
         setError('');
+        return true;
     };
 
     return (
