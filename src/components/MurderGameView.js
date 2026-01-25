@@ -28,9 +28,7 @@ function MurderGameView({
                 return;
             }
             canvasRef.current.centerGraph();
-            canvasRef.current.zoomOut();
-            canvasRef.current.zoomOut();
-        }, 0);
+        }, 150);
 
         return () => clearTimeout(timeoutId);
     }, [nodes.length, edges.length]);

@@ -66,7 +66,27 @@ function MurderGame() {
             return false;
         }
 
-        const edgeId = `${source}->${target}`;
+        const targetMap = new Map();
+        edges.forEach((edge) => {
+            targetMap.set(edge.source, edge.target);
+        });
+        let chainSource = source;
+        const visited = new Set();
+        while (targetMap.has(chainSource)) {
+            if (visited.has(chainSource)) {
+                setError('Cannot add edge because a cycle exists in the chain.');
+                return false;
+            }
+            visited.add(chainSource);
+            chainSource = targetMap.get(chainSource);
+        }
+
+        if (chainSource === target) {
+            setError('Source and target must be different.');
+            return false;
+        }
+
+        const edgeId = `${chainSource}->${target}`;
         if (edgeIds.has(edgeId)) {
             setError('That edge already exists.');
             return false;
@@ -74,15 +94,15 @@ function MurderGame() {
 
         setNodes((prev) => {
             const next = [...prev];
-            if (!nodeIds.has(source)) {
-                next.push({ id: source, label: source });
+            if (!nodeIds.has(chainSource)) {
+                next.push({ id: chainSource, label: chainSource });
             }
             if (!nodeIds.has(target)) {
                 next.push({ id: target, label: target });
             }
             return next;
         });
-        setEdges((prev) => [...prev, { id: edgeId, source, target }]);
+        setEdges((prev) => [...prev, { id: edgeId, source: chainSource, target }]);
         setSourceInput('');
         setTargetInput('');
         setError('');
