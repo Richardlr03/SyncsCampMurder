@@ -3,16 +3,8 @@ import MurderGameView from './MurderGameView';
 
 const STORAGE_KEY = 'murder-game-graph';
 const DEFAULT_GRAPH = {
-    nodes: [
-        { id: 'Dillon de Silva', label: 'Dillon de Silva' },
-        { id: 'Jennifer Tan', label: 'Jennifer Tan' },
-        { id: 'Thomas Dizon', label: 'Thomas Dizon' },
-        { id: 'Jessica Tan', label: 'Jessica Tan' }
-    ],
-    edges: [
-        { id: 'Dillon de Silva->Jennifer Tan', source: 'Dillon de Silva', target: 'Jennifer Tan' },
-        { id: 'Thomas Dizon->Jessica Tan', source: 'Thomas Dizon', target: 'Jessica Tan' }
-    ]
+    nodes: [],
+    edges: []
 };
 
 const loadGraph = () => {
@@ -37,6 +29,7 @@ function MurderGame() {
     const [edges, setEdges] = useState(initialGraph.edges);
     const [sourceInput, setSourceInput] = useState('');
     const [targetInput, setTargetInput] = useState('');
+    const [nodeInput, setNodeInput] = useState('');
     const [error, setError] = useState('');
 
     const nodeIds = useMemo(() => new Set(nodes.map((node) => node.id)), [nodes]);
@@ -109,8 +102,34 @@ function MurderGame() {
         return true;
     };
 
+    const addNode = (nodeValue) => {
+        const nodeId = nodeValue.trim();
+        if (!nodeId) {
+            setError('Node name is required.');
+            return false;
+        }
+        if (nodeIds.has(nodeId)) {
+            setError('That node already exists.');
+            return false;
+        }
+        setNodes((prev) => [...prev, { id: nodeId, label: nodeId }]);
+        setNodeInput('');
+        setError('');
+        return true;
+    };
+
     const removeEdge = (edgeId) => {
         setEdges((prev) => prev.filter((edge) => edge.id !== edgeId));
+    };
+
+    const resetGraph = () => {
+        setNodes([]);
+        setEdges([]);
+        setSourceInput('');
+        setTargetInput('');
+        setNodeInput('');
+        setError('');
+        localStorage.removeItem(STORAGE_KEY);
     };
 
     return (
@@ -119,11 +138,15 @@ function MurderGame() {
             edges={edges}
             sourceInput={sourceInput}
             targetInput={targetInput}
+            nodeInput={nodeInput}
             error={error}
             onSourceChange={setSourceInput}
             onTargetChange={setTargetInput}
+            onNodeChange={setNodeInput}
             onSubmit={addEdge}
+            onCreateNode={addNode}
             onEdgeClick={removeEdge}
+            onReset={resetGraph}
         />
     );
   }
