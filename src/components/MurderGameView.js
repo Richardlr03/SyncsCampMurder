@@ -24,29 +24,20 @@ function MurderGameView({
 
     return (
         <div className="container mx-auto flex flex-col gap-4">
-            <div className="px-4 pt-4">
-                <button
-                    className="rounded bg-black px-4 py-2 text-white"
-                    type="button"
-                    onClick={() => setIsModalOpen(true)}
-                >
-                    Create Edge
-                </button>
-            </div>
             {isModalOpen ? (
                 <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/50 p-4">
                     <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
-                        <h2 className="text-lg font-semibold">Create Edge</h2>
+                        <h2 className="text-lg font-semibold">Create Link</h2>
                         <form className="mt-4 flex flex-col gap-3" onSubmit={handleSubmit}>
                             <input
                                 className="w-full rounded border border-gray-300 px-3 py-2"
-                                placeholder="Source node"
+                                placeholder="Killer"
                                 value={sourceInput}
                                 onChange={(event) => onSourceChange(event.target.value)}
                             />
                             <input
                                 className="w-full rounded border border-gray-300 px-3 py-2"
-                                placeholder="Target node"
+                                placeholder="Victim"
                                 value={targetInput}
                                 onChange={(event) => onTargetChange(event.target.value)}
                             />
@@ -63,14 +54,23 @@ function MurderGameView({
                                     className="rounded bg-black px-4 py-2 text-white"
                                     type="submit"
                                 >
-                                    Add edge
+                                    Add Link
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
             ) : null}
-            <div className="relative h-[70vh] min-h-[360px]">
+            <div className="relative h-[70vh] min-h-[360px] overflow-visible">
+                <div className="absolute right-4 top-4 z-10">
+                    <button
+                        className="rounded bg-black px-4 py-2 text-white"
+                        type="button"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Create Link
+                    </button>
+                </div>
                 <GraphCanvas
                     theme={murderGraphTheme}
                     draggable={true}
