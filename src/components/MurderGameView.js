@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { GraphCanvas } from 'reagraph';
 import { murderGraphTheme } from './MurderGraphTheme';
 
@@ -14,6 +14,7 @@ function MurderGameView({
     onEdgeClick
 }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const canvasRef = useRef(null);
     const handleSubmit = (event) => {
         event.preventDefault();
         const success = onSubmit(sourceInput, targetInput);
@@ -21,6 +22,18 @@ function MurderGameView({
             setIsModalOpen(false);
         }
     };
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (!canvasRef.current) {
+                return;
+            }
+            canvasRef.current.centerGraph();
+            canvasRef.current.zoomOut();
+            canvasRef.current.zoomOut();
+        }, 0);
+
+        return () => clearTimeout(timeoutId);
+    }, [nodes.length, edges.length]);
 
     return (
         <div className="container mx-auto flex flex-col gap-4">
@@ -61,7 +74,7 @@ function MurderGameView({
                     </div>
                 </div>
             ) : null}
-            <div className="relative h-[70vh] min-h-[360px] overflow-visible">
+            <div className="relative h-[80vh] min-h-[480px] overflow-visible pt-6">
                 <div className="absolute right-4 top-4 z-10">
                     <button
                         className="rounded bg-black px-4 py-2 text-white"
@@ -72,6 +85,7 @@ function MurderGameView({
                     </button>
                 </div>
                 <GraphCanvas
+                    ref={canvasRef}
                     theme={murderGraphTheme}
                     draggable={true}
                     nodes={nodes}
