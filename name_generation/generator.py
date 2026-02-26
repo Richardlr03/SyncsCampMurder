@@ -9,16 +9,6 @@ CARDS_VALUE_DICT = {
     "Y": 12, "Z": 13,
 }
 
-SUIT_MULTIPLIER = {
-    "A": 1, "B": 1, "C": 1, "D": 1, "E": 1, "F": 1,
-    "G": 0, "H": 0, "I": 0, "J": 0, "K": 0, "L": 0,
-    "M": 2, "N": 2, "O": 2, "P": 2, "Q": 2, "R": 2,
-    "S": -1, "T": -1, "U": -1, "V": -1, "W": -1, "X": -1,
-}
-
-JOKERS = {"Y", "Z"}
-JOKER_VALUE = 7
-
 names = []
 
 def mystery_hash(name):
@@ -30,13 +20,7 @@ def mystery_hash(name):
         if char not in CARDS_VALUE_DICT:
             continue
 
-        card_num = CARDS_VALUE_DICT[char]
-
-        if char in JOKERS:
-            total += card_num + JOKER_VALUE
-        else:
-            suit_modifier = SUIT_MULTIPLIER[char]
-            total += card_num + suit_modifier
+        total += CARDS_VALUE_DICT[char]
     
     return total
 

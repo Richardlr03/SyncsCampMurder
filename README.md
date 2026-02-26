@@ -1,3 +1,30 @@
+# CampFire (Murder Graph)
+
+## Quick start
+
+### Prerequisites
+
+- Node.js 18+ (includes npm)
+- Git
+
+### Install and run
+
+```bash
+npm install
+npm start
+```
+
+Open `http://localhost:3000`.
+
+### Using the murder graph
+
+- Click **Create Node** to add people.
+- Click **Create Link** to add a killer -> victim link.
+- Click **Reset Graph** to clear local data.
+
+Notes:
+- Graph data is stored in `localStorage`. If someone runs in private/incognito mode or blocks site storage, new nodes/links will not persist.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
