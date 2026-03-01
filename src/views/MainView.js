@@ -17,14 +17,18 @@ function MainView() {
 
   return (
     <div className="App">
-      <div class="place-content-center h-screen w-screen">
+      <div className="place-content-center h-screen w-screen">
         <div className="font-bold flex flex-row justify-end m-4">
             <div>
             <ToggleButtonGroup
             color="primary"
             exclusive
             value={currentMode}
-            onChange={(event, newMode) => setCurrentMode(newMode)}
+            onChange={(event, newMode) => {
+              if (newMode) {
+                setCurrentMode(newMode);
+              }
+            }}
             aria-label="Platform"
             >
                 <ToggleButton value="murderGraph">Murder Graph</ToggleButton>

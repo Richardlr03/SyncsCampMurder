@@ -15,7 +15,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-d3-tree": "^3.6.2",
     "react-dom": "^18.2.0",
-    "react-google-charts": "^4.0.1",
+    "react-google-charts": "^4.0.7",
     "react-scripts": "5.0.1",
     "reagraph": "^4.15.18",
     "web-vitals": "^2.1.4"

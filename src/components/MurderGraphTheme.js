@@ -2,6 +2,8 @@ export const murderGraphTheme = {
     canvas: { background: '#fff' },
     node: {
         fill: '#F20F38',
+        stroke: '#7A0019',
+        strokeWidth: 2,
         activeFill: '#1DE9AC',
         opacity: 1,
         selectedOpacity: 1,

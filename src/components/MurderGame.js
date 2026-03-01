@@ -34,6 +34,15 @@ function MurderGame() {
 
     const nodeIds = useMemo(() => new Set(nodes.map((node) => node.id)), [nodes]);
     const edgeIds = useMemo(() => new Set(edges.map((edge) => edge.id)), [edges]);
+    const graphNodes = useMemo(
+        () =>
+            nodes.map(({ size, ...node }) => ({
+                ...node,
+                label: (node.label ?? node.id ?? '').toString(),
+                labelVisible: true
+            })),
+        [nodes]
+    );
 
     useEffect(() => {
         localStorage.setItem(
@@ -122,6 +131,33 @@ function MurderGame() {
         setEdges((prev) => prev.filter((edge) => edge.id !== edgeId));
     };
 
+    const removeLinkByNames = (sourceValue, targetValue) => {
+        const source = sourceValue.trim();
+        const target = targetValue.trim();
+
+        if (!source || !target) {
+            setError('Killer and victim are required.');
+            return false;
+        }
+
+        const edgeToRemove = edges.find(
+            (edge) => edge.source === source && edge.target === target
+        );
+
+        if (!edgeToRemove) {
+            setError('Link not found.');
+            return false;
+        }
+
+        setEdges((prev) => prev.filter((edge) => edge.id !== edgeToRemove.id));
+        setError('');
+        return true;
+    };
+
+    const clearError = () => {
+        setError('');
+    };
+
     const resetGraph = () => {
         setNodes([]);
         setEdges([]);
@@ -134,7 +170,7 @@ function MurderGame() {
 
     return (
         <MurderGameView
-            nodes={nodes}
+            nodes={graphNodes}
             edges={edges}
             sourceInput={sourceInput}
             targetInput={targetInput}
@@ -145,6 +181,8 @@ function MurderGame() {
             onNodeChange={setNodeInput}
             onSubmit={addEdge}
             onCreateNode={addNode}
+            onRemoveLink={removeLinkByNames}
+            onClearError={clearError}
             onEdgeClick={removeEdge}
             onReset={resetGraph}
         />

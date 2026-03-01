@@ -1,47 +1,74 @@
-import { Chart } from "react-google-charts";
+import {
+    BarElement,
+    CategoryScale,
+    Chart as ChartJS,
+    Legend,
+    LinearScale,
+    Title,
+    Tooltip
+} from "chart.js";
+import { Bar } from "react-chartjs-2";
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function TeamScores() {
-    const data = [
-        [
-            "Team",
-            "Score",
-            { role: "style" },
-            {
-            sourceColumn: 0,
-            role: "annotation",
-            type: "string",
-            calc: "stringify",
-            },
-        ],
-        ["Flying Unicorns", 8.94, "#348888", null],
-        ["SUNKS", 10.49, "#60E1EB", null],
-        ["Brainy Saucer", 19.3, "#6F9396", null],
-        ["SnipedByNinja", 25, "color: #D2A4DB", null],
-        ["The Avengers", 30, "color: #60EBA6", null],
-        ["Tidepod Nation", 21.45, "color: #7E5EF2", null],
-        ["Imperial Sass", 21.45, "color: #F2F080", null],
+    const labels = [
+        "Asu Frat Leader",
+        "6 or 7 Chuds",
+        "Jeffrey's not a Chud",
+        "Pink Panthers",
+        "Co-Predators",
+        "Gay Daughter or Thot Sun",
+        "The Coldest"
     ];
 
+    const scores = [790, 1380, 870, 940, 640, 730, 670];
+    const colors = [
+        "purple",
+        "yellow",
+        "gray",
+        "pink",
+        "#FFB6C1",
+        "#BD98E0",
+        "blue"
+    ];
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: "Score",
+                data: scores,
+                backgroundColor: colors,
+                borderWidth: 0
+            }
+        ]
+    };
+
     const options = {
-        title: "SYNCS CAMP LEADERBOARD",
-        bar: { groupWidth: "50%" },
-        legend: { position: "none" },
+        responsive: true,
+        maintainAspectRatio: false,
         animation: {
-            startup: true,
             easing: "linear",
-            duration: 1500,
+            duration: 1500
         },
+        plugins: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "SYNCS CAMP LEADERBOARD"
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
     };
     
     return (
-        <div className="container mx-auto block place-content-center">
-            <Chart
-            chartType="BarChart"
-            width="100%"
-            height="400px"
-            data={data}
-            options={options}
-            />
+        <div className="container mx-auto block place-content-center h-[400px]">
+            <Bar data={data} options={options} />
         </div>
     )
 }
